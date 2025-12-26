@@ -2,12 +2,13 @@ package com.javacourse.system;
 
 import com.javacourse.entity.DepthCharge;
 import com.javacourse.entity.Explosion;
+import com.javacourse.entity.Ship;
 import com.javacourse.entity.Submarine;
+import com.javacourse.entity.SubmarineBullet;
 import com.javacourse.factory.EntityFactory;
 import com.javacourse.framework.core.GameWorld;
 import com.javacourse.framework.physics.CollisionDetector;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 public class CollisionHandler {
@@ -24,6 +25,7 @@ public class CollisionHandler {
 
     public void update() {
         checkBombSubmarineCollisions();
+        checkSubmarineBulletShipCollisions();
     }
 
 //  TODO 可以拓展为有血量和攻击力, 通过在GameEntity里面添加health和attack, 但是我太懒了就一击必杀算了
@@ -56,5 +58,35 @@ public class CollisionHandler {
 
         bomb.destroy();
         submarine.destroy();
+    }
+
+    private void checkSubmarineBulletShipCollisions() {
+        List<SubmarineBullet> bullets = world.getEntitiesByType(SubmarineBullet.class);
+        List<Ship> ships = world.getEntitiesByType(Ship.class);
+
+        for (SubmarineBullet bullet : bullets) {
+            if (!bullet.isAlive()) {
+                continue;
+            }
+
+            for (Ship ship : ships) {
+                if (!ship.isAlive()) {
+                    continue;
+                }
+
+                if (CollisionDetector.checkCollision(bullet, ship)) {
+                    handleSubmarineBulletCollision(bullet, ship);
+                }
+            }
+        }
+    }
+
+    private void handleSubmarineBulletCollision(SubmarineBullet bullet, Ship ship) {
+        double explosionX = ship.getX();
+        double explosionY = ship.getY();
+        Explosion explosion = factory.createExplosion(explosionX, explosionY);
+        world.addEntity(explosion);
+
+        bullet.destroy();
     }
 }

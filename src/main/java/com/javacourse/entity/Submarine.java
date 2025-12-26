@@ -13,10 +13,14 @@ import java.util.List;
 
 public class Submarine extends GameEntity implements Render {
 
-    private BufferedImage image;
     private Direction direction;
     private int submarineType;
     private int score;
+    private int rightFrameIndex;
+    private int leftFrameIndex;
+    private long lastFireTime;
+    private int fireCooldown;
+    private boolean canFire;
 
     public Submarine (double x, double y, Direction direction, int submarineType, List<BufferedImage> frames) {
         super(x, y, Constants.SUBMARINE_WIDTH, Constants.SUBMARINE_HEIGHT);
@@ -25,6 +29,11 @@ public class Submarine extends GameEntity implements Render {
         this.submarineType = submarineType;
         //TODO: 解耦游戏计分方式
         this.score = 10 + submarineType*5;
+        this.rightFrameIndex = 0;
+        this.leftFrameIndex = 1;
+        this.fireCooldown = Constants.SUBMARINE_FIRE_COOLDOWN;
+        this.lastFireTime = 0;
+        this.canFire = true;
 
         double speed = MathUtil.getRandomInt(Constants.SUBMARINE_SPEED_MIN, Constants.SUBMARINE_SPEED_MAX);
         if (direction == Direction.LEFT) {
@@ -34,11 +43,14 @@ public class Submarine extends GameEntity implements Render {
         }
 
         initAnimation(frames, Constants.FRAME_DELAY, true);
+        if (animation != null) {
+            animation.setPlaying(false);
+            setFrameIndex(direction == Direction.LEFT ? leftFrameIndex : rightFrameIndex);
+        }
     }
 
     public Submarine (double x, double y, Direction direction, int submarineType, BufferedImage image) {
         this(x, y, direction, submarineType, Arrays.asList(image));
-        this.image = image;
     }
 
     @Override
@@ -48,12 +60,14 @@ public class Submarine extends GameEntity implements Render {
             destroy();
         }
         bounds.setPosition((int)x, (int)y);
+        updateFireCooldown();
     }
 
     @Override
     public void render (Graphics g) {
-        if (image != null) {
-            g.drawImage(image, (int)x, (int)y, width, height, null);
+        if (animation != null && animation.getFrameCount() > 0) {
+            BufferedImage currentFrame = animation.getCurrentFrame();
+            g.drawImage(currentFrame, (int)x, (int)y, width, height, null);
         } else {
             Color[] colors = {
                     Color.CYAN,
@@ -78,5 +92,33 @@ public class Submarine extends GameEntity implements Render {
 
     public int getSubmarineType() {
         return submarineType;
+    }
+
+    public boolean canFire() {
+        return canFire;
+    }
+
+    public void markFired() {
+        canFire = false;
+        lastFireTime = System.currentTimeMillis();
+    }
+
+    private void updateFireCooldown() {
+        if (submarineType != Constants.SUBMARINE_TYPE_ELITE) {
+            return;
+        }
+        long currentTime = System.currentTimeMillis();
+        if (!canFire && currentTime - lastFireTime >= fireCooldown) {
+            canFire = true;
+        }
+    }
+
+    private void setFrameIndex(int index) {
+        if (animation == null) {
+            return;
+        }
+        if (index >= 0 && index < animation.getFrameCount()) {
+            animation.setCurrentFrameIndex(index);
+        }
     }
 }
