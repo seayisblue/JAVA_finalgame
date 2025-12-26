@@ -41,6 +41,13 @@ public class Constants {
     public static final int SUBMARINE_MAX_COUNT = 10;
     public static final int SUBMARINE_SPAWN_MIN_INTERVAL = 1000;
     public static final int SUBMARINE_SPAWN_MAX_INTERVAL = 5000;
+    public static final int SUBMARINE_BULLET_WIDTH = 14;
+    public static final int SUBMARINE_BULLET_HEIGHT = 14;
+    public static final int SUBMARINE_BULLET_SPEED = 5;
+    public static final int SUBMARINE_FIRE_COOLDOWN = 2000;
+    public static final int SUBMARINE_TYPE_FRIENDLY = 0;
+    public static final int SUBMARINE_TYPE_ENEMY = 1;
+    public static final int SUBMARINE_TYPE_ELITE = 2;
 
     public static final int EXPLOSION_WIDTH = 60;
     public static final int EXPLOSION_HEIGHT = 60;
@@ -55,8 +62,11 @@ public class Constants {
         public static final String SUBMARINE_Q1 = "/images/q1.png";
         public static final String SUBMARINE_Q2 = "/images/q2.png";
         public static final String SUBMARINE_R1 = "/images/r1.png";
+        public static final String SUBMARINE_R2 = "/images/r2.png";
+        public static final String SUBMARINE_H1 = "/images/h1.png";
         public static final String SUBMARINE_H2 = "/images/h2.png";
         public static final String BOMB = "/images/boom.png";
+        public static final String ENEMY_BOMB = "/images/boom2.png";
         public static final String EXPLOSION_0 = "/images/b.png";
         public static final String EXPLOSION_1 = "/images/b1.png";
         public static final String EXPLOSION_2 = "/images/b2.png";

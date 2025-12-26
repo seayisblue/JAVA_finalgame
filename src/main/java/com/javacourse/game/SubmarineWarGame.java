@@ -9,10 +9,10 @@ import com.javacourse.framework.core.GameWorld;
 import com.javacourse.config.Constants;
 import com.javacourse.system.CollisionHandler;
 import com.javacourse.system.ScoreSystem;
+import com.javacourse.system.SubmarineAttackSystem;
 import com.javacourse.system.SubmarineSpawner;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
 
 public class SubmarineWarGame {
     private GameWorld world;
@@ -22,13 +22,12 @@ public class SubmarineWarGame {
     private EntityFactory factory;
 
     private Ship player1Ship;
-    private Ship player2Ship;
     private PlayerController player1Controller;
-    private PlayerController player2Controller;
 
     private SubmarineSpawner submarineSpawner;
     private CollisionHandler collisionHandler;
     private ScoreSystem scoreSystem;
+    private SubmarineAttackSystem submarineAttackSystem;
 
     public SubmarineWarGame() {
         world = new GameWorld(
@@ -37,8 +36,8 @@ public class SubmarineWarGame {
         );
 
         factory = new EntityFactory();
-        initSystems();
         initPlayers();
+        initSystems();
         initPanel();
 
         gameLoop = new GameLoop(world, ()->{
@@ -65,13 +64,14 @@ public class SubmarineWarGame {
         scoreSystem = new ScoreSystem();
         submarineSpawner = new SubmarineSpawner(factory, world);
         collisionHandler = new CollisionHandler(world, factory, scoreSystem);
+        submarineAttackSystem = new SubmarineAttackSystem(factory, world, player1Ship);
     }
 
     private void initPlayers() {
 
         int ID = 0;
 
-        player1Ship = factory.createShip(ID ++,
+        player1Ship = factory.createShip(ID,
                 Constants.SHIP1_SPAWN_X, Constants.SHIP1_SPAWN_Y);
 
         world.addEntity(player1Ship);
@@ -83,23 +83,11 @@ public class SubmarineWarGame {
         );
         player1Controller.setOnFire(() -> fireBomb(player1Ship));
 
-        player2Ship = factory.createShip(ID,
-                Constants.SHIP2_SPAWN_X, Constants.SHIP2_SPAWN_Y);
-        world.addEntity(player2Ship);
-        player2Controller = new PlayerController(
-                player2Ship,
-                Constants.SHIP2_LEFT_KEY,
-                Constants.SHIP2_RIGHT_KEY,
-                Constants.SHIP2_FIRE_KEY
-        );
-        player2Controller.setOnFire(() -> fireBomb(player2Ship));
-
     }
 
     private void initPanel() {
         gamePanel = new GamePanel(world, scoreSystem);
         gamePanel.addKeyListener(player1Controller);
-        gamePanel.addKeyListener(player2Controller);
         gamePanel.setFocusable(true);
     }
 
@@ -115,6 +103,7 @@ public class SubmarineWarGame {
 
     private void updateGame() {
         submarineSpawner.update();
+        submarineAttackSystem.update();
         collisionHandler.update();
     }
 
