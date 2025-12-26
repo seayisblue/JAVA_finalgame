@@ -31,7 +31,7 @@ public class SubmarineAttackSystem {
             if (submarine.getSubmarineType() != Constants.SUBMARINE_TYPE_ELITE) {
                 continue;
             }
-            if (!submarine.canFire()) {
+            if (!isSubmarineOnScreen(submarine)) {
                 continue;
             }
             double startX = submarine.getX() + submarine.getWidth() / 2.0 - Constants.SUBMARINE_BULLET_WIDTH / 2.0;
@@ -42,4 +42,16 @@ public class SubmarineAttackSystem {
             submarine.markFired();
         }
     }
+
+    private boolean isSubmarineOnScreen(Submarine submarine) {
+        double x = submarine.getX();
+        double y = submarine.getY();
+        double width = submarine.getWidth();
+        double height = submarine.getHeight();
+        return x + width > 0
+                && x < Constants.WINDOW_WIDTH
+                && y + height > 0
+                && y < Constants.WINDOW_HEIGHT;
+    }
+
 }
