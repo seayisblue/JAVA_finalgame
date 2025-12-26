@@ -52,11 +52,10 @@ public class EntityFactory {
     }
 
     public Ship createShip(int playerId, double x, double y) {
-        if (playerId >= 0 && playerId < diffShipImages.size()) {
-            BufferedImage shipImage = diffShipImages.get(playerId);
-            return new Ship(playerId, x, y, shipImage);
+        if (!diffShipImages.isEmpty()) {
+            return new Ship(playerId, x, y, diffShipImages);
         }
-        return new Ship(playerId, x, y, (BufferedImage)null);
+        return new Ship(playerId, x, y, (BufferedImage) null);
     }
 
     public DepthCharge createBomb(double x, double y, int ownerId) {
