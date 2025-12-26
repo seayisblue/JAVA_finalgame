@@ -11,6 +11,8 @@ import java.util.List;
 
 public class Ship extends GameEntity implements Render {
     private int playerId;
+    private int rightFrameIndex;
+    private int leftFrameIndex;
 
     private long lastFireTime;
     private int fireCooldown; // milliseconds
@@ -23,8 +25,16 @@ public class Ship extends GameEntity implements Render {
         this.fireCooldown = Constants.FIRE_COOLDOWN;
         this.lastFireTime = 0;
         this.canFire = true;
+        this.rightFrameIndex = 0;
+        this.leftFrameIndex = 1;
 
         super.initAnimation(frames, Constants.FRAME_DELAY, true);
+        if (animation != null) {
+            animation.setPlaying(false);
+            if (animation.getFrameCount() > 0) {
+                animation.setCurrentFrameIndex(rightFrameIndex);
+            }
+        }
     }
 
     public Ship (int playerId, double x, double y, BufferedImage image) {
@@ -64,11 +74,13 @@ public class Ship extends GameEntity implements Render {
     public void moveLeft() {
         System.out.println("ship move left Id:" + playerId);
         velocity.setVx(-Constants.SHIP_SPEED);
+        setFrameIndex(leftFrameIndex);
     }
 
     public void moveRight() {
         System.out.println("ship move right Id:" + playerId);
         velocity.setVx(Constants.SHIP_SPEED);
+        setFrameIndex(rightFrameIndex);
     }
 
 
@@ -115,5 +127,14 @@ public class Ship extends GameEntity implements Render {
 
     public boolean isCanFire() {
         return canFire;
+    }
+
+    private void setFrameIndex(int index) {
+        if (animation == null) {
+            return;
+        }
+        if (index >= 0 && index < animation.getFrameCount()) {
+            animation.setCurrentFrameIndex(index);
+        }
     }
 }
