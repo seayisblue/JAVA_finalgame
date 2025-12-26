@@ -34,9 +34,6 @@ public class SubmarineAttackSystem {
             if (!isSubmarineOnScreen(submarine)) {
                 continue;
             }
-            if (!submarine.canFire()) {
-                continue;
-            }
             double startX = submarine.getX() + submarine.getWidth() / 2.0 - Constants.SUBMARINE_BULLET_WIDTH / 2.0;
             double startY = submarine.getY() + submarine.getHeight() / 2.0 - Constants.SUBMARINE_BULLET_HEIGHT / 2.0;
             double targetX = targetShip.getX() + targetShip.getWidth() / 2.0;
@@ -56,4 +53,5 @@ public class SubmarineAttackSystem {
                 && y + height > 0
                 && y < Constants.WINDOW_HEIGHT;
     }
+
 }
