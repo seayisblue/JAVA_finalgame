@@ -9,6 +9,7 @@ import com.javacourse.framework.core.GameWorld;
 import com.javacourse.config.Constants;
 import com.javacourse.system.CollisionHandler;
 import com.javacourse.system.ScoreSystem;
+import com.javacourse.system.SubmarineAttackSystem;
 import com.javacourse.system.SubmarineSpawner;
 
 import javax.swing.*;
@@ -26,6 +27,7 @@ public class SubmarineWarGame {
     private SubmarineSpawner submarineSpawner;
     private CollisionHandler collisionHandler;
     private ScoreSystem scoreSystem;
+    private SubmarineAttackSystem submarineAttackSystem;
 
     public SubmarineWarGame() {
         world = new GameWorld(
@@ -34,8 +36,8 @@ public class SubmarineWarGame {
         );
 
         factory = new EntityFactory();
-        initSystems();
         initPlayers();
+        initSystems();
         initPanel();
 
         gameLoop = new GameLoop(world, ()->{
@@ -62,6 +64,7 @@ public class SubmarineWarGame {
         scoreSystem = new ScoreSystem();
         submarineSpawner = new SubmarineSpawner(factory, world);
         collisionHandler = new CollisionHandler(world, factory, scoreSystem);
+        submarineAttackSystem = new SubmarineAttackSystem(factory, world, player1Ship);
     }
 
     private void initPlayers() {
@@ -100,6 +103,7 @@ public class SubmarineWarGame {
 
     private void updateGame() {
         submarineSpawner.update();
+        submarineAttackSystem.update();
         collisionHandler.update();
     }
 
