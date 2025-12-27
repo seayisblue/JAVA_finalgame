@@ -13,8 +13,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +25,7 @@ public class GamePanel extends GameCanvas {
     private BufferedImage backgroundImage;
     private Point mousePosition;
 
+
     private UiButton startButton;
     private UiButton singleModeButton;
     private UiButton doubleModeButton;
@@ -37,12 +36,6 @@ public class GamePanel extends GameCanvas {
     private UiButton exitButton;
     private UiButton restartButton;
     private UiButton menuButton;
-
-    private final String fontFamily;
-    private final Font baseFont;
-
-    private static final String FONT_RESOURCE_PATH = "/fonts/msyh.ttf";
-
     public GamePanel(GameWorld world, ScoreSystem scoreSystem, LifeSystem lifeSystem, GameUIController uiController) {
         super(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         this.world = world;
@@ -50,8 +43,6 @@ public class GamePanel extends GameCanvas {
         this.lifeSystem = lifeSystem;
         this.uiController = uiController;
         this.mousePosition = new Point(-1, -1);
-        this.fontFamily = resolveFontFamily();
-        this.baseFont = loadFontFromResource();
 
         ResourceManager resourceManager = ResourceManager.getInstance();
         this.backgroundImage = resourceManager.getImage("background");
@@ -121,7 +112,8 @@ public class GamePanel extends GameCanvas {
         if (uiController.getGameState() != GameState.RUNNING) {
             return;
         }
-        g.setFont(createFont(Font.BOLD, 22));
+        g.setFont(new Font("Arial", Font.BOLD, 22));
+
 
         g.setColor(new Color(10, 30, 120));
         String p1Score = "P1: " + scoreSystem.getPlayer1Score() + "  生命: " + lifeSystem.getPlayer1Lives();
@@ -154,13 +146,18 @@ public class GamePanel extends GameCanvas {
         int panelX = (width - panelWidth) / 2;
         int panelY = (height - panelHeight) / 2;
 
-        g.setFont(createFont(Font.BOLD, 52));
+
+        g.setFont(new Font("Serif", Font.BOLD, 52));
+
+
         g.setColor(new Color(235, 245, 255));
         drawCenteredString(g, "深海潜艇大战", new Rectangle(panelX, panelY, panelWidth, panelHeight / 4));
 
         drawPrimaryButton(g, startButton, "开始游戏");
 
-        g.setFont(createFont(Font.PLAIN, 20));
+
+        g.setFont(new Font("Arial", Font.PLAIN, 20));
+
         g.setColor(Color.WHITE);
         g.drawString("模式选择", panelX + 60, startButton.bounds.y + startButton.bounds.height + 45);
         drawSelectionButton(g, singleModeButton, "单人模式", uiController.getGameMode() == GameMode.SINGLE);
@@ -171,7 +168,8 @@ public class GamePanel extends GameCanvas {
         drawSelectionButton(g, normalButton, Difficulty.NORMAL.getLabel(), uiController.getDifficulty() == Difficulty.NORMAL);
         drawSelectionButton(g, hardButton, Difficulty.HARD.getLabel(), uiController.getDifficulty() == Difficulty.HARD);
 
-        g.setFont(createFont(Font.PLAIN, 16));
+        g.setFont(new Font("Arial", Font.PLAIN, 16));
+
         g.setColor(new Color(220, 235, 255));
         int instructionY = easyButton.bounds.y + easyButton.bounds.height + 30;
         g.drawString("操作说明：", panelX + 60, instructionY);
@@ -184,7 +182,8 @@ public class GamePanel extends GameCanvas {
         drawOverlayMask(g);
         drawPanelBackground(g);
 
-        g.setFont(createFont(Font.BOLD, 32));
+        g.setFont(new Font("Arial", Font.BOLD, 32));
+
         g.setColor(Color.WHITE);
         drawCenteredString(g, "游戏暂停", new Rectangle(0, height / 2 - 140, width, 50));
 
@@ -196,11 +195,12 @@ public class GamePanel extends GameCanvas {
         drawOverlayMask(g);
         drawPanelBackground(g);
 
-        g.setFont(createFont(Font.BOLD, 46));
+        g.setFont(new Font("Serif", Font.BOLD, 46));
         g.setColor(new Color(255, 120, 60));
         drawCenteredString(g, "游戏结束", new Rectangle(0, height / 2 - 170, width, 60));
 
-        g.setFont(createFont(Font.BOLD, 20));
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+
         g.setColor(Color.WHITE);
         if (uiController.getGameMode() == GameMode.SINGLE) {
             int score = scoreSystem.getPlayer1Score();
@@ -254,7 +254,9 @@ public class GamePanel extends GameCanvas {
         g.fillRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 16, 16);
         g.setColor(Color.WHITE);
         g.drawRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 16, 16);
-        g.setFont(createFont(Font.BOLD, 20));
+
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+
         drawCenteredString(g, label, button.bounds);
     }
 
@@ -271,7 +273,9 @@ public class GamePanel extends GameCanvas {
         g.fillRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 12, 12);
         g.setColor(new Color(220, 235, 255));
         g.drawRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 12, 12);
-        g.setFont(createFont(Font.PLAIN, 18));
+
+        g.setFont(new Font("Arial", Font.PLAIN, 18));
+
         drawCenteredString(g, label, button.bounds);
     }
 
@@ -313,7 +317,6 @@ public class GamePanel extends GameCanvas {
         int panelHeight = (int) (height * 0.8);
         int panelX = (width - panelWidth) / 2;
         int panelY = (height - panelHeight) / 2;
-
         int buttonWidth = 220;
         int buttonHeight = 50;
         int startButtonY = panelY + panelHeight / 2 - 120;
@@ -345,48 +348,6 @@ public class GamePanel extends GameCanvas {
         g.drawString(text, x, y);
     }
 
-    private Font createFont(int style, int size) {
-        if (baseFont != null) {
-            return baseFont.deriveFont(style, (float) size);
-        }
-        return new Font(fontFamily, style, size);
-    }
-
-    private String resolveFontFamily() {
-        String[] preferredFonts = {
-                "Microsoft YaHei",
-                "PingFang SC",
-                "Noto Sans CJK SC",
-                "WenQuanYi Micro Hei",
-                "SimHei",
-                "Source Han Sans CN",
-                "Arial Unicode MS",
-                "SansSerif",
-                "Dialog"
-        };
-        Set<String> available = new HashSet<>(
-                Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames())
-        );
-        for (String candidate : preferredFonts) {
-            if (available.contains(candidate)) {
-                return candidate;
-            }
-        }
-        return "SansSerif";
-    }
-
-    private Font loadFontFromResource() {
-        try (InputStream inputStream = getClass().getResourceAsStream(FONT_RESOURCE_PATH)) {
-            if (inputStream == null) {
-                return null;
-            }
-            Font font = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
-            return font;
-        } catch (FontFormatException | IOException e) {
-            return null;
-        }
-    }
 
     private static class UiButton {
         private final Rectangle bounds;
