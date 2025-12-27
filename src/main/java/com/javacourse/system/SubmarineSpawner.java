@@ -18,6 +18,7 @@ public class SubmarineSpawner {
     private int nextSpawnInterval;
     private int minInterval;
     private int maxInterval;
+    private int friendlyLimit;
 
     public SubmarineSpawner(EntityFactory factory, GameWorld world) {
         this.factory = factory;
@@ -28,6 +29,7 @@ public class SubmarineSpawner {
         this.minInterval = Constants.SUBMARINE_SPAWN_MIN_INTERVAL;
         this.maxInterval = Constants.SUBMARINE_SPAWN_MAX_INTERVAL;
         this.nextSpawnInterval = minInterval;
+        this.friendlyLimit = Constants.FRIENDLY_SUBMARINE_NORMAL_MAX;
     }
 
     public void applyDifficulty(Difficulty difficulty) {
@@ -39,17 +41,26 @@ public class SubmarineSpawner {
                 maxSubmarines = Constants.EASY_MAX_SUBMARINES;
                 minInterval = Constants.EASY_SPAWN_MIN_INTERVAL;
                 maxInterval = Constants.EASY_SPAWN_MAX_INTERVAL;
+                friendlyLimit = Constants.FRIENDLY_SUBMARINE_EASY_MAX;
+                Submarine.setEnemySpeedRange(Constants.ENEMY_SPEED_EASY_MIN, Constants.ENEMY_SPEED_EASY_MAX);
+                Submarine.setEliteFireCooldown(Constants.ELITE_FIRE_COOLDOWN_EASY);
                 break;
             case HARD:
                 maxSubmarines = Constants.HARD_MAX_SUBMARINES;
                 minInterval = Constants.HARD_SPAWN_MIN_INTERVAL;
                 maxInterval = Constants.HARD_SPAWN_MAX_INTERVAL;
+                friendlyLimit = Constants.FRIENDLY_SUBMARINE_HARD_MAX;
+                Submarine.setEnemySpeedRange(Constants.ENEMY_SPEED_HARD_MIN, Constants.ENEMY_SPEED_HARD_MAX);
+                Submarine.setEliteFireCooldown(Constants.ELITE_FIRE_COOLDOWN_HARD);
                 break;
             case NORMAL:
             default:
                 maxSubmarines = Constants.SUBMARINE_MAX_COUNT;
                 minInterval = Constants.SUBMARINE_SPAWN_MIN_INTERVAL;
                 maxInterval = Constants.SUBMARINE_SPAWN_MAX_INTERVAL;
+                friendlyLimit = Constants.FRIENDLY_SUBMARINE_NORMAL_MAX;
+                Submarine.setEnemySpeedRange(Constants.ENEMY_SPEED_NORMAL_MIN, Constants.ENEMY_SPEED_NORMAL_MAX);
+                Submarine.setEliteFireCooldown(Constants.ELITE_FIRE_COOLDOWN_NORMAL);
                 break;
         }
         nextSpawnInterval = randomInterval();
@@ -87,7 +98,14 @@ public class SubmarineSpawner {
                 Constants.SUBMARINE_ZONE_BOTTOM
         );
 
-        Submarine submarine = factory.createRandomSubmarine(x, y, direction);
+        int friendlyCount = countFriendlySubmarines();
+        int type;
+        if (friendlyCount >= friendlyLimit) {
+            type = MathUtil.getRandomInt(Constants.SUBMARINE_TYPE_ENEMY, Constants.SUBMARINE_TYPE_ELITE);
+        } else {
+            type = MathUtil.getRandomInt(Constants.SUBMARINE_TYPE_FRIENDLY, Constants.SUBMARINE_TYPE_ELITE);
+        }
+        Submarine submarine = factory.createCertainSubmarine(x, y, direction, type);
         world.addEntity(submarine);
     }
 
@@ -98,5 +116,15 @@ public class SubmarineSpawner {
 
     private int randomInterval() {
         return (int)(minInterval + Math.random() * (maxInterval - minInterval));
+    }
+
+    private int countFriendlySubmarines() {
+        int count = 0;
+        for (Submarine submarine : world.getEntitiesByType(Submarine.class)) {
+            if (submarine.getSubmarineType() == Constants.SUBMARINE_TYPE_FRIENDLY) {
+                count++;
+            }
+        }
+        return count;
     }
 }

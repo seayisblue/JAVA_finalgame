@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Submarine extends GameEntity implements Render {
+    private static int enemySpeedMin = Constants.SUBMARINE_SPEED_MIN;
+    private static int enemySpeedMax = Constants.SUBMARINE_SPEED_MAX;
+    private static int eliteFireCooldown = Constants.SUBMARINE_FIRE_COOLDOWN;
 
     private Direction direction;
     private int submarineType;
@@ -31,11 +34,16 @@ public class Submarine extends GameEntity implements Render {
         this.score = 10 + submarineType*5;
         this.rightFrameIndex = 0;
         this.leftFrameIndex = 1;
-        this.fireCooldown = Constants.SUBMARINE_FIRE_COOLDOWN;
+        this.fireCooldown = eliteFireCooldown;
         this.lastFireTime = 0;
         this.canFire = true;
 
-        double speed = MathUtil.getRandomInt(Constants.SUBMARINE_SPEED_MIN, Constants.SUBMARINE_SPEED_MAX);
+        double speed;
+        if (submarineType == Constants.SUBMARINE_TYPE_FRIENDLY) {
+            speed = MathUtil.getRandomInt(Constants.SUBMARINE_SPEED_MIN, Constants.SUBMARINE_SPEED_MAX);
+        } else {
+            speed = MathUtil.getRandomInt(enemySpeedMin, enemySpeedMax);
+        }
         if (direction == Direction.LEFT) {
             this.velocity.setVx(-speed);
         } else {
@@ -101,6 +109,15 @@ public class Submarine extends GameEntity implements Render {
     public void markFired() {
         canFire = false;
         lastFireTime = System.currentTimeMillis();
+    }
+
+    public static void setEnemySpeedRange(int min, int max) {
+        enemySpeedMin = min;
+        enemySpeedMax = max;
+    }
+
+    public static void setEliteFireCooldown(int cooldown) {
+        eliteFireCooldown = cooldown;
     }
 
     private void updateFireCooldown() {
