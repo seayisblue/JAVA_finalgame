@@ -109,7 +109,9 @@ public class GamePanel extends GameCanvas {
         if (uiController.getGameState() != GameState.RUNNING) {
             return;
         }
+
         g.setFont(new Font("Arial", Font.BOLD, 22));
+
 
         g.setColor(new Color(10, 30, 120));
         String p1Score = "P1: " + scoreSystem.getPlayer1Score() + "  生命: " + lifeSystem.getPlayer1Lives();
@@ -142,13 +144,17 @@ public class GamePanel extends GameCanvas {
         int panelX = (width - panelWidth) / 2;
         int panelY = (height - panelHeight) / 2;
 
+
         g.setFont(new Font("Serif", Font.BOLD, 52));
+
         g.setColor(new Color(235, 245, 255));
         drawCenteredString(g, "深海潜艇大战", new Rectangle(panelX, panelY, panelWidth, panelHeight / 4));
 
         drawPrimaryButton(g, startButton, "开始游戏");
 
+
         g.setFont(new Font("Arial", Font.PLAIN, 20));
+
         g.setColor(Color.WHITE);
         g.drawString("模式选择", panelX + 60, startButton.bounds.y + startButton.bounds.height + 45);
         drawSelectionButton(g, singleModeButton, "单人模式", uiController.getGameMode() == GameMode.SINGLE);
@@ -159,7 +165,9 @@ public class GamePanel extends GameCanvas {
         drawSelectionButton(g, normalButton, Difficulty.NORMAL.getLabel(), uiController.getDifficulty() == Difficulty.NORMAL);
         drawSelectionButton(g, hardButton, Difficulty.HARD.getLabel(), uiController.getDifficulty() == Difficulty.HARD);
 
+
         g.setFont(new Font("Arial", Font.PLAIN, 16));
+
         g.setColor(new Color(220, 235, 255));
         int instructionY = easyButton.bounds.y + easyButton.bounds.height + 30;
         g.drawString("操作说明：", panelX + 60, instructionY);
@@ -172,7 +180,9 @@ public class GamePanel extends GameCanvas {
         drawOverlayMask(g);
         drawPanelBackground(g);
 
+
         g.setFont(new Font("Arial", Font.BOLD, 32));
+
         g.setColor(Color.WHITE);
         drawCenteredString(g, "游戏暂停", new Rectangle(0, height / 2 - 140, width, 50));
 
@@ -242,7 +252,9 @@ public class GamePanel extends GameCanvas {
         g.fillRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 16, 16);
         g.setColor(Color.WHITE);
         g.drawRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 16, 16);
+
         g.setFont(new Font("Arial", Font.BOLD, 20));
+
         drawCenteredString(g, label, button.bounds);
     }
 
@@ -259,7 +271,9 @@ public class GamePanel extends GameCanvas {
         g.fillRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 12, 12);
         g.setColor(new Color(220, 235, 255));
         g.drawRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 12, 12);
+
         g.setFont(new Font("Arial", Font.PLAIN, 18));
+
         drawCenteredString(g, label, button.bounds);
     }
 
