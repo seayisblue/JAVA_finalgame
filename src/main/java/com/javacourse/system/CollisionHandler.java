@@ -8,6 +8,7 @@ import com.javacourse.entity.SubmarineBullet;
 import com.javacourse.factory.EntityFactory;
 import com.javacourse.framework.core.GameWorld;
 import com.javacourse.framework.physics.CollisionDetector;
+import com.javacourse.config.Constants;
 
 import java.util.List;
 
@@ -52,7 +53,11 @@ public class CollisionHandler {
     private void handleBombCollision(DepthCharge bomb, Submarine submarine) {
         int playerId = bomb.getOwnerId();
 
-        scoreSystem.addScore(playerId, submarine.getScore());
+        int scoreDelta = submarine.getScore();
+        if (submarine.getSubmarineType() == Constants.SUBMARINE_TYPE_FRIENDLY) {
+            scoreDelta = -scoreDelta;
+        }
+        scoreSystem.addScore(playerId, scoreDelta);
         double explosionX = submarine.getX();
         double explosionY = submarine.getY();
         Explosion explosion = factory.createExplosion(explosionX, explosionY);

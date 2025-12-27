@@ -47,6 +47,16 @@ public class Constants {
     public static final int SUBMARINE_HEIGHT = 30;
     public static final int SUBMARINE_SPEED_MIN = 1;
     public static final int SUBMARINE_SPEED_MAX = 3;
+    public static final int ENEMY_SPEED_EASY_MIN = 1;
+    public static final int ENEMY_SPEED_EASY_MAX = 2;
+    public static final int ENEMY_SPEED_NORMAL_MIN = 2;
+    public static final int ENEMY_SPEED_NORMAL_MAX = 3;
+    public static final int ENEMY_SPEED_HARD_MIN = 3;
+    public static final int ENEMY_SPEED_HARD_MAX = 4;
+
+    public static final int FRIENDLY_SUBMARINE_EASY_MAX = 2;
+    public static final int FRIENDLY_SUBMARINE_NORMAL_MAX = 4;
+    public static final int FRIENDLY_SUBMARINE_HARD_MAX = 6;
     public static final int SUBMARINE_MAX_COUNT = 10;
     public static final int SUBMARINE_SPAWN_MIN_INTERVAL = 1000;
     public static final int SUBMARINE_SPAWN_MAX_INTERVAL = 5000;
@@ -54,6 +64,9 @@ public class Constants {
     public static final int SUBMARINE_BULLET_HEIGHT = 14;
     public static final int SUBMARINE_BULLET_SPEED = 5;
     public static final int SUBMARINE_FIRE_COOLDOWN = 2000;
+    public static final int ELITE_FIRE_COOLDOWN_EASY = 2600;
+    public static final int ELITE_FIRE_COOLDOWN_NORMAL = 2000;
+    public static final int ELITE_FIRE_COOLDOWN_HARD = 1400;
     public static final int SUBMARINE_TYPE_FRIENDLY = 0;
     public static final int SUBMARINE_TYPE_ENEMY = 1;
     public static final int SUBMARINE_TYPE_ELITE = 2;
