@@ -25,6 +25,7 @@ public class GamePanel extends GameCanvas {
     private BufferedImage backgroundImage;
     private Point mousePosition;
 
+
     private UiButton startButton;
     private UiButton singleModeButton;
     private UiButton doubleModeButton;
@@ -111,8 +112,8 @@ public class GamePanel extends GameCanvas {
         if (uiController.getGameState() != GameState.RUNNING) {
             return;
         }
-
         g.setFont(new Font("Arial", Font.BOLD, 22));
+
 
         g.setColor(new Color(10, 30, 120));
         String p1Score = "P1: " + scoreSystem.getPlayer1Score() + "  生命: " + lifeSystem.getPlayer1Lives();
@@ -145,12 +146,15 @@ public class GamePanel extends GameCanvas {
         int panelX = (width - panelWidth) / 2;
         int panelY = (height - panelHeight) / 2;
 
+
         g.setFont(new Font("Serif", Font.BOLD, 52));
+
 
         g.setColor(new Color(235, 245, 255));
         drawCenteredString(g, "深海潜艇大战", new Rectangle(panelX, panelY, panelWidth, panelHeight / 4));
 
         drawPrimaryButton(g, startButton, "开始游戏");
+
 
         g.setFont(new Font("Arial", Font.PLAIN, 20));
 
@@ -196,6 +200,7 @@ public class GamePanel extends GameCanvas {
         drawCenteredString(g, "游戏结束", new Rectangle(0, height / 2 - 170, width, 60));
 
         g.setFont(new Font("Arial", Font.BOLD, 20));
+
         g.setColor(Color.WHITE);
         if (uiController.getGameMode() == GameMode.SINGLE) {
             int score = scoreSystem.getPlayer1Score();
@@ -312,7 +317,6 @@ public class GamePanel extends GameCanvas {
         int panelHeight = (int) (height * 0.8);
         int panelX = (width - panelWidth) / 2;
         int panelY = (height - panelHeight) / 2;
-
         int buttonWidth = 220;
         int buttonHeight = 50;
         int startButtonY = panelY + panelHeight / 2 - 120;
