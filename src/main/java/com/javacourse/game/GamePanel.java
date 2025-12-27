@@ -13,6 +13,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GamePanel extends GameCanvas {
     private final GameWorld world;
@@ -32,7 +35,6 @@ public class GamePanel extends GameCanvas {
     private UiButton exitButton;
     private UiButton restartButton;
     private UiButton menuButton;
-
     public GamePanel(GameWorld world, ScoreSystem scoreSystem, LifeSystem lifeSystem, GameUIController uiController) {
         super(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         this.world = world;
@@ -112,7 +114,6 @@ public class GamePanel extends GameCanvas {
 
         g.setFont(new Font("Arial", Font.BOLD, 22));
 
-
         g.setColor(new Color(10, 30, 120));
         String p1Score = "P1: " + scoreSystem.getPlayer1Score() + "  生命: " + lifeSystem.getPlayer1Lives();
         g.drawString(p1Score, 20, 40);
@@ -144,14 +145,12 @@ public class GamePanel extends GameCanvas {
         int panelX = (width - panelWidth) / 2;
         int panelY = (height - panelHeight) / 2;
 
-
         g.setFont(new Font("Serif", Font.BOLD, 52));
 
         g.setColor(new Color(235, 245, 255));
         drawCenteredString(g, "深海潜艇大战", new Rectangle(panelX, panelY, panelWidth, panelHeight / 4));
 
         drawPrimaryButton(g, startButton, "开始游戏");
-
 
         g.setFont(new Font("Arial", Font.PLAIN, 20));
 
@@ -164,7 +163,6 @@ public class GamePanel extends GameCanvas {
         drawSelectionButton(g, easyButton, Difficulty.EASY.getLabel(), uiController.getDifficulty() == Difficulty.EASY);
         drawSelectionButton(g, normalButton, Difficulty.NORMAL.getLabel(), uiController.getDifficulty() == Difficulty.NORMAL);
         drawSelectionButton(g, hardButton, Difficulty.HARD.getLabel(), uiController.getDifficulty() == Difficulty.HARD);
-
 
         g.setFont(new Font("Arial", Font.PLAIN, 16));
 
@@ -179,7 +177,6 @@ public class GamePanel extends GameCanvas {
     private void renderPauseMenu(Graphics2D g) {
         drawOverlayMask(g);
         drawPanelBackground(g);
-
 
         g.setFont(new Font("Arial", Font.BOLD, 32));
 
@@ -346,6 +343,7 @@ public class GamePanel extends GameCanvas {
         int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
         g.drawString(text, x, y);
     }
+
 
     private static class UiButton {
         private final Rectangle bounds;
