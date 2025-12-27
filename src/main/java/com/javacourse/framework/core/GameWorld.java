@@ -52,6 +52,9 @@ public class GameWorld {
 
 
     public void update() {
+        if (!running) {
+            return;
+        }
         synchronized (entitiesToAdd) {
             if (!entitiesToAdd.isEmpty()) {
                 for (LifeCycle entity : entitiesToAdd) {
