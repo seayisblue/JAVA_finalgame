@@ -15,7 +15,6 @@ public class App {
         SwingUtilities.invokeLater(()->{
 
             ResourceConfig.loadAllResources();
-            System.out.println( "Game Resources Initialized" );
 
             JFrame frame = new JFrame(Constants.GAME_TITLE);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

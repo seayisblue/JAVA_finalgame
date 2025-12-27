@@ -1,6 +1,7 @@
 package com.javacourse.system;
 
 import com.javacourse.entity.Submarine;
+import com.javacourse.game.Difficulty;
 import com.javacourse.factory.EntityFactory;
 import com.javacourse.framework.core.GameWorld;
 import com.javacourse.config.Constants;
@@ -27,6 +28,31 @@ public class SubmarineSpawner {
         this.minInterval = Constants.SUBMARINE_SPAWN_MIN_INTERVAL;
         this.maxInterval = Constants.SUBMARINE_SPAWN_MAX_INTERVAL;
         this.nextSpawnInterval = minInterval;
+    }
+
+    public void applyDifficulty(Difficulty difficulty) {
+        if (difficulty == null) {
+            return;
+        }
+        switch (difficulty) {
+            case EASY:
+                maxSubmarines = Constants.EASY_MAX_SUBMARINES;
+                minInterval = Constants.EASY_SPAWN_MIN_INTERVAL;
+                maxInterval = Constants.EASY_SPAWN_MAX_INTERVAL;
+                break;
+            case HARD:
+                maxSubmarines = Constants.HARD_MAX_SUBMARINES;
+                minInterval = Constants.HARD_SPAWN_MIN_INTERVAL;
+                maxInterval = Constants.HARD_SPAWN_MAX_INTERVAL;
+                break;
+            case NORMAL:
+            default:
+                maxSubmarines = Constants.SUBMARINE_MAX_COUNT;
+                minInterval = Constants.SUBMARINE_SPAWN_MIN_INTERVAL;
+                maxInterval = Constants.SUBMARINE_SPAWN_MAX_INTERVAL;
+                break;
+        }
+        nextSpawnInterval = randomInterval();
     }
 
     public void update() {

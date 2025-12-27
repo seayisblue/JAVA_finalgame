@@ -16,9 +16,6 @@ public class FrameworkTest {
             frame.setVisible(true);
 
             game.start();
-            System.out.println("✅ Framework test started!");
-            System.out.println("Use Arrow Keys to move the box");
-            System.out.println("Press ESC to exit");
         });
     }
 }

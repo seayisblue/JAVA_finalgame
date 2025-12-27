@@ -24,10 +24,19 @@ public class Constants {
 
     public static final int SHIP1_LEFT_KEY = KeyEvent.VK_A;
     public static final int SHIP1_RIGHT_KEY = KeyEvent.VK_D;
-    public static final int SHIP1_FIRE_KEY = KeyEvent.VK_W;
+    public static final int SHIP1_FIRE_KEY = KeyEvent.VK_SPACE;
     public static final int SHIP2_LEFT_KEY = KeyEvent.VK_LEFT;
     public static final int SHIP2_RIGHT_KEY = KeyEvent.VK_RIGHT;
-    public static final int SHIP2_FIRE_KEY = KeyEvent.VK_UP;
+    public static final int SHIP2_FIRE_KEY = KeyEvent.VK_SPACE;
+
+    public static final int DEFAULT_LIVES = 3;
+
+    public static final int EASY_MAX_SUBMARINES = 6;
+    public static final int EASY_SPAWN_MIN_INTERVAL = 1600;
+    public static final int EASY_SPAWN_MAX_INTERVAL = 4200;
+    public static final int HARD_MAX_SUBMARINES = 14;
+    public static final int HARD_SPAWN_MIN_INTERVAL = 700;
+    public static final int HARD_SPAWN_MAX_INTERVAL = 3200;
 
     public static final int BOMB_WIDTH = 20;
     public static final int BOMB_HEIGHT = 20;
