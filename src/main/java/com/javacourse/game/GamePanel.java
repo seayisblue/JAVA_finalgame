@@ -178,7 +178,7 @@ public class GamePanel extends GameCanvas {
         int instructionY = easyButton.bounds.y + easyButton.bounds.height + 30;
         g.drawString("操作说明：", panelX + 60, instructionY);
         g.drawString("• 移动：方向键↑↓←→或 WASD 控制玩家船只", panelX + 80, instructionY + 24);
-        g.drawString("• 射击：空格键发射子弹", panelX + 80, instructionY + 48);
+        g.drawString("• 放炸弹：AD 移动时按 W，方向键移动时按 ↑", panelX + 80, instructionY + 48);
         g.drawString("• 暂停：ESC 键暂停游戏", panelX + 80, instructionY + 72);
     }
 
