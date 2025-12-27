@@ -125,19 +125,22 @@ public class SubmarineWarGame implements GameUIController {
 
         int[] player1LeftKeys;
         int[] player1RightKeys;
+        int[] player1FireKeys;
         if (gameMode == GameMode.SINGLE) {
             player1LeftKeys = new int[]{Constants.SHIP1_LEFT_KEY, Constants.SHIP2_LEFT_KEY};
             player1RightKeys = new int[]{Constants.SHIP1_RIGHT_KEY, Constants.SHIP2_RIGHT_KEY};
+            player1FireKeys = new int[]{Constants.SHIP1_FIRE_KEY, Constants.SHIP2_FIRE_KEY};
         } else {
             player1LeftKeys = new int[]{Constants.SHIP1_LEFT_KEY};
             player1RightKeys = new int[]{Constants.SHIP1_RIGHT_KEY};
+            player1FireKeys = new int[]{Constants.SHIP1_FIRE_KEY};
         }
 
         player1Controller = new PlayerController(
                 player1Ship,
                 player1LeftKeys,
                 player1RightKeys,
-                new int[]{Constants.SHIP1_FIRE_KEY}
+                player1FireKeys
         );
         player1Controller.setOnFire(() -> fireBomb(player1Ship));
         gamePanel.addKeyListener(player1Controller);
