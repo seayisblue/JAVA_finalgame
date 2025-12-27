@@ -33,7 +33,6 @@ public class Explosion extends GameEntity implements Render {
     @Override
     public void render(Graphics g) {
 
-        System.out.println("Explosion render at (" + x + ", " + y + ")");
         if (animation != null && animation.getCurrentFrame() != null) {
             BufferedImage currentFrame = animation.getCurrentFrame();
             g.drawImage(currentFrame, (int)x, (int)y, width, height, null);

@@ -76,12 +76,10 @@ public class EntityFactory {
     }
 
     public DepthCharge createBomb(double x, double y, int ownerId) {
-        System.out.println("Creating depth charge at (" + x + ", " + y + ") by player " + ownerId);
         return new DepthCharge(x, y, ownerId, bombImage);
     }
 
     public Submarine createRandomSubmarine (double x, double y, Direction direction) {
-        System.out.println("Creating submarine at (" + x + ", " + y + ") going " + direction);
         int type = MathUtil.getRandomInt(0, 2);
         return createCertainSubmarine(x, y, direction, type);
     }
@@ -96,12 +94,10 @@ public class EntityFactory {
     }
 
     public Explosion createExplosion(double x, double y) {
-        System.out.println("Creating explosion at (" + x + ", " + y + ")");
         return new Explosion(x, y, explosionFrames);
     }
 
     public SubmarineBullet createSubmarineBullet(double x, double y, double targetX, double targetY) {
-        System.out.println("Creating submarine bullet at (" + x + ", " + y + ") towards (" + targetX + ", " + targetY + ")");
         return new SubmarineBullet(x, y, targetX, targetY, enemyBombImage);
     }
 
