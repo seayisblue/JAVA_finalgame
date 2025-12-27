@@ -13,6 +13,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +26,7 @@ public class GamePanel extends GameCanvas {
     private final GameUIController uiController;
     private BufferedImage backgroundImage;
     private Point mousePosition;
+    private Font uiFont;
 
 
     private UiButton startButton;
@@ -43,6 +46,7 @@ public class GamePanel extends GameCanvas {
         this.lifeSystem = lifeSystem;
         this.uiController = uiController;
         this.mousePosition = new Point(-1, -1);
+        this.uiFont = loadUiFont();
 
         ResourceManager resourceManager = ResourceManager.getInstance();
         this.backgroundImage = resourceManager.getImage("background");
@@ -112,7 +116,7 @@ public class GamePanel extends GameCanvas {
         if (uiController.getGameState() != GameState.RUNNING) {
             return;
         }
-        g.setFont(new Font("Arial", Font.BOLD, 22));
+        g.setFont(getUiFont(Font.BOLD, 22f));
 
 
         g.setColor(new Color(10, 30, 120));
@@ -147,7 +151,7 @@ public class GamePanel extends GameCanvas {
         int panelY = (height - panelHeight) / 2;
 
 
-        g.setFont(new Font("Serif", Font.BOLD, 52));
+        g.setFont(getUiFont(Font.BOLD, 52f));
 
 
         g.setColor(new Color(235, 245, 255));
@@ -156,7 +160,7 @@ public class GamePanel extends GameCanvas {
         drawPrimaryButton(g, startButton, "开始游戏");
 
 
-        g.setFont(new Font("Arial", Font.PLAIN, 20));
+        g.setFont(getUiFont(Font.PLAIN, 20f));
 
         g.setColor(Color.WHITE);
         g.drawString("模式选择", panelX + 60, startButton.bounds.y + startButton.bounds.height + 45);
@@ -168,7 +172,7 @@ public class GamePanel extends GameCanvas {
         drawSelectionButton(g, normalButton, Difficulty.NORMAL.getLabel(), uiController.getDifficulty() == Difficulty.NORMAL);
         drawSelectionButton(g, hardButton, Difficulty.HARD.getLabel(), uiController.getDifficulty() == Difficulty.HARD);
 
-        g.setFont(new Font("Arial", Font.PLAIN, 16));
+        g.setFont(getUiFont(Font.PLAIN, 16f));
 
         g.setColor(new Color(220, 235, 255));
         int instructionY = easyButton.bounds.y + easyButton.bounds.height + 30;
@@ -182,7 +186,7 @@ public class GamePanel extends GameCanvas {
         drawOverlayMask(g);
         drawPanelBackground(g);
 
-        g.setFont(new Font("Arial", Font.BOLD, 32));
+        g.setFont(getUiFont(Font.BOLD, 32f));
 
         g.setColor(Color.WHITE);
         drawCenteredString(g, "游戏暂停", new Rectangle(0, height / 2 - 140, width, 50));
@@ -195,11 +199,11 @@ public class GamePanel extends GameCanvas {
         drawOverlayMask(g);
         drawPanelBackground(g);
 
-        g.setFont(new Font("Serif", Font.BOLD, 46));
+        g.setFont(getUiFont(Font.BOLD, 46f));
         g.setColor(new Color(255, 120, 60));
         drawCenteredString(g, "游戏结束", new Rectangle(0, height / 2 - 170, width, 60));
 
-        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.setFont(getUiFont(Font.BOLD, 20f));
 
         g.setColor(Color.WHITE);
         if (uiController.getGameMode() == GameMode.SINGLE) {
@@ -255,7 +259,7 @@ public class GamePanel extends GameCanvas {
         g.setColor(Color.WHITE);
         g.drawRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 16, 16);
 
-        g.setFont(new Font("Arial", Font.BOLD, 20));
+        g.setFont(getUiFont(Font.BOLD, 20f));
 
         drawCenteredString(g, label, button.bounds);
     }
@@ -274,7 +278,7 @@ public class GamePanel extends GameCanvas {
         g.setColor(new Color(220, 235, 255));
         g.drawRoundRect(button.bounds.x, button.bounds.y, button.bounds.width, button.bounds.height, 12, 12);
 
-        g.setFont(new Font("Arial", Font.PLAIN, 18));
+        g.setFont(getUiFont(Font.PLAIN, 18f));
 
         drawCenteredString(g, label, button.bounds);
     }
@@ -346,6 +350,26 @@ public class GamePanel extends GameCanvas {
         int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
         int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
         g.drawString(text, x, y);
+    }
+
+    private Font loadUiFont() {
+        try (InputStream stream = GamePanel.class.getResourceAsStream("/fonts/msyh.ttf")) {
+            if (stream == null) {
+                return new Font("SansSerif", Font.PLAIN, 12);
+            }
+            Font font = Font.createFont(Font.TRUETYPE_FONT, stream);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+            return font;
+        } catch (FontFormatException | IOException e) {
+            return new Font("SansSerif", Font.PLAIN, 12);
+        }
+    }
+
+    private Font getUiFont(int style, float size) {
+        if (uiFont == null) {
+            return new Font("SansSerif", style, (int) size);
+        }
+        return uiFont.deriveFont(style, size);
     }
 
 
