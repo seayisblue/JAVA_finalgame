@@ -16,11 +16,13 @@ public class CollisionHandler {
     private GameWorld world;
     private EntityFactory factory;
     private ScoreSystem scoreSystem;
+    private LifeSystem lifeSystem;
 
-    public CollisionHandler(GameWorld world, EntityFactory factory, ScoreSystem scoreSystem) {
+    public CollisionHandler(GameWorld world, EntityFactory factory, ScoreSystem scoreSystem, LifeSystem lifeSystem) {
         this.world = world;
         this.factory = factory;
         this.scoreSystem = scoreSystem;
+        this.lifeSystem = lifeSystem;
     }
 
     public void update() {
@@ -86,6 +88,10 @@ public class CollisionHandler {
         double explosionY = ship.getY();
         Explosion explosion = factory.createExplosion(explosionX, explosionY);
         world.addEntity(explosion);
+
+        if (lifeSystem != null) {
+            lifeSystem.damagePlayer(ship.getPlayerId(), 1);
+        }
 
         bullet.destroy();
     }
