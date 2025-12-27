@@ -12,17 +12,17 @@ public class PlayerController implements KeyListener {
     private Ship ship;
     private Set<Integer> pressedKeys;
 
-    private int leftKey;
-    private int rightKey;
-    private int fireKey;
+    private int[] leftKeys;
+    private int[] rightKeys;
+    private int[] fireKeys;
 
     private Runnable onFire;
 
-    public PlayerController (Ship ship, int leftKey, int rightKey, int fireKey ) {
+    public PlayerController(Ship ship, int[] leftKeys, int[] rightKeys, int[] fireKeys) {
         this.ship = ship;
-        this.leftKey = leftKey;
-        this.rightKey = rightKey;
-        this.fireKey = fireKey;
+        this.leftKeys = leftKeys;
+        this.rightKeys = rightKeys;
+        this.fireKeys = fireKeys;
         this.pressedKeys = new HashSet<>();
     }
 
@@ -34,11 +34,11 @@ public class PlayerController implements KeyListener {
         int key = e.getKeyCode();
         pressedKeys.add(key);
 
-        if (key == leftKey) {
+        if (isInKeys(key, leftKeys)) {
             ship.moveLeft();
-        } else if (key == rightKey) {
+        } else if (isInKeys(key, rightKeys)) {
             ship.moveRight();
-        } else if (key == fireKey) {
+        } else if (isInKeys(key, fireKeys)) {
             if (onFire != null) {
                 onFire.run();
             }
@@ -50,8 +50,8 @@ public class PlayerController implements KeyListener {
         int key = e.getKeyCode();
         pressedKeys.remove(key);
 
-        if (key == leftKey || key == rightKey) {
-            if (!pressedKeys.contains(leftKey) && !pressedKeys.contains(rightKey)) {
+        if (isInKeys(key, leftKeys) || isInKeys(key, rightKeys)) {
+            if (!hasAnyPressed(leftKeys) && !hasAnyPressed(rightKeys)) {
                 ship.stopMoving();
             }
         }
@@ -60,5 +60,29 @@ public class PlayerController implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
         // Not used
+    }
+
+    private boolean isInKeys(int key, int[] keys) {
+        if (keys == null) {
+            return false;
+        }
+        for (int candidate : keys) {
+            if (candidate == key) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasAnyPressed(int[] keys) {
+        if (keys == null) {
+            return false;
+        }
+        for (int candidate : keys) {
+            if (pressedKeys.contains(candidate)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

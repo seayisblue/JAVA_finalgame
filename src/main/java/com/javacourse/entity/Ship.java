@@ -72,13 +72,11 @@ public class Ship extends GameEntity implements Render {
     }
 
     public void moveLeft() {
-        System.out.println("ship move left Id:" + playerId);
         velocity.setVx(-Constants.SHIP_SPEED);
         setFrameIndex(leftFrameIndex);
     }
 
     public void moveRight() {
-        System.out.println("ship move right Id:" + playerId);
         velocity.setVx(Constants.SHIP_SPEED);
         setFrameIndex(rightFrameIndex);
     }

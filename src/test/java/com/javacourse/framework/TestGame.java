@@ -18,7 +18,6 @@ public class TestGame {
     public TestGame() {
         // 初始化资源管理器
         ResourceConfig.loadAllResources();
-        System.out.println("Test Resources Initialized");
 
         world = new GameWorld(Constants.WINDOW_WIDTH,
                 Constants.WINDOW_HEIGHT);
